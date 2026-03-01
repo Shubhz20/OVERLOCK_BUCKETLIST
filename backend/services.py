@@ -9,10 +9,48 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def process_upload(df):
-    required_cols = ['Date', 'SKU', 'Sales_Quantity', 'Current_Stock']
-    if not all(col in df.columns for col in required_cols):
-        raise ValueError("CSV must contain columns: Date, SKU, Sales_Quantity, Current_Stock")
+    # Extremely robust column normalization
+    def normalize(name):
+        import re
+        # Remove non-alphanumeric chars and lowercase
+        return re.sub(r'[^a-zA-Z0-9]', '', str(name)).lower()
+
+    # Create mapping from normalized name to original name
+    mapping = {normalize(c): c for c in df.columns}
+    
+    # Check for presence and map to standard names
+    found_mapping = {}
+    
+    # Aliases for each required field
+    aliases = {
+        'Date': ['date', 'timestamp', 'day', 'orderdate', 'salestime', 'period'],
+        'SKU': ['sku', 'productid', 'skuid', 'itemid', 'product', 'proid', 'productname', 'item'],
+        'Sales_Quantity': ['salesquantity', 'salesqty', 'unitsold', 'unitssold', 'quantity', 'sales', 'demand', 'soldcontent', 'unitssold', 'qty', 'volumesold'],
+        'Current_Stock': ['currentstock', 'inventory', 'stock', 'stocklevel', 'qtyonhand', 'inventorylevel', 'stockqty', 'inventorylevel', 'stockavailable']
+    }
+    
+    missing = []
+    for standard, list_of_aliases in aliases.items():
+        found = False
+        for alias in list_of_aliases:
+            norm_alias = normalize(alias)
+            if norm_alias in mapping:
+                found_mapping[mapping[norm_alias]] = standard
+                found = True
+                break
+        if not found:
+            missing.append(standard)
+    
+    if missing:
+        found_cols = ", ".join(df.columns)
+        # Detailed error log for the terminal
+        print(f"DEBUG: Missing {missing}")
+        print(f"DEBUG: Normalized Headers: {list(mapping.keys())}")
+        raise ValueError(f"Missing columns: {', '.join(missing)}. Found: {found_cols}. Please rename your headers to match.")
         
+    # Standardize column names
+    df = df.rename(columns=found_mapping)
+    
     skus = df['SKU'].unique().tolist()
     
     
@@ -26,7 +64,7 @@ def process_upload(df):
         "current_stock_valuation": int(total_stock)
     }
     
-    return skus, summary
+    return df, skus, summary
 
 def generate_forecast(df, sku, days_to_forecast=30):
     df_sku = df[df['SKU'] == sku].copy()

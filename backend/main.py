@@ -199,7 +199,10 @@ async def upload_file(
         
     try:
         df = pd.read_csv(path)
-        skus, summary = process_upload(df)
+        df, skus, summary = process_upload(df)
+        
+        # Save the standardized CSV back to disk
+        df.to_csv(path, index=False)
         
       
         conn = sqlite3.connect(DB_PATH)
