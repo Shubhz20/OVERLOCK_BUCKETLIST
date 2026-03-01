@@ -70,6 +70,13 @@ def save_skus(skus):
         f.write("\n".join(skus))
 
 
+def read_data_or_raise() -> pd.DataFrame:
+    """Load uploaded CSV data or raise 400 if not available."""
+    if not os.path.exists(DATA_PATH):
+        raise HTTPException(status_code=400, detail="No data uploaded yet.")
+    return pd.read_csv(DATA_PATH)
+
+
 @app.get("/user/me")
 def get_user_status():
     has_data = os.path.exists(DATA_PATH)
@@ -103,11 +110,11 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.get("/forecast")
 def forecast(sku: str, days: int = 30):
-    if not os.path.exists(DATA_PATH):
-        raise HTTPException(status_code=400, detail="No data uploaded yet.")
     try:
-        df = pd.read_csv(DATA_PATH)
+        df = read_data_or_raise()
         return generate_forecast(df, sku, days)
+    except HTTPException:
+        raise
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
@@ -116,11 +123,11 @@ def forecast(sku: str, days: int = 30):
 
 @app.get("/recommend")
 def recommend(sku: str, lead_time: int = 7):
-    if not os.path.exists(DATA_PATH):
-        raise HTTPException(status_code=400, detail="No data uploaded yet.")
     try:
-        df = pd.read_csv(DATA_PATH)
+        df = read_data_or_raise()
         return get_recommendations(df, sku, lead_time)
+    except HTTPException:
+        raise
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
@@ -129,11 +136,11 @@ def recommend(sku: str, lead_time: int = 7):
 
 @app.get("/insights")
 def insights(sku: Optional[str] = None):
-    if not os.path.exists(DATA_PATH):
-        raise HTTPException(status_code=400, detail="No data uploaded yet.")
     try:
-        df = pd.read_csv(DATA_PATH)
+        df = read_data_or_raise()
         return get_insights(df, sku)
+    except HTTPException:
+        raise
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
@@ -142,11 +149,11 @@ def insights(sku: Optional[str] = None):
 
 @app.get("/portfolio")
 def portfolio():
-    if not os.path.exists(DATA_PATH):
-        raise HTTPException(status_code=400, detail="No data uploaded yet.")
     try:
-        df = pd.read_csv(DATA_PATH)
+        df = read_data_or_raise()
         return get_portfolio(df)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating portfolio: {str(e)}")
 
