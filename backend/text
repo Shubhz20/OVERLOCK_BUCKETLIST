@@ -1,39 +1,45 @@
 🛠️ Core Tech Stack
 Web Framework: FastAPI (Python) – Used because it automatically handles asynchronous requests, data validation, and generates fast, scalable APIs.
+
 Data Processing: Pandas & NumPy – The standard tools for wrangling, grouping, and calculating mathematical statistics on the raw CSV data.
+
 Database Engine: SQLite3 – A lightweight, serverless relational database. It is used to securely store user credentials, mapping keys to uploaded local CSVs, and logging recent forecast executions.
+
 Authentication: JWT (JSON Web Tokens) & Bcrypt – Used for secure password hashing and generating session tokens, meaning the API is stateless but completely locked down to authorized users.
+
 Machine Learning / AI:
 Facebook Prophet (prophet): For robust daily/weekly seasonality predictions.
+
 Holt-Winters (statsmodels): For additive exponential smoothing.
+
 Moving Average fallback: Used as a safe baseline predictor.
+
 📂 File Architecture
 The backend is split into two primary files to keep the web-routing separate from the heavy math calculations:
 
-1. 
+1.
 
 main.py
- (The Traffic Controller)
+(The Traffic Controller)
 This is the entry point of your application. It handles all HTTP web traffic and database I/O.
 
-
 init_db()
-: On boot, this spins up an SQLite database data/users.db. It creates three tables: users (credentials), 
+: On boot, this spins up an SQLite database data/users.db. It creates three tables: users (credentials),
 
-user_data
- (maps a user to their specific CSV upload flag), and search_history (logs whenever a user runs a forecast).
+user*data
+(maps a user to their specific CSV upload flag), and search_history (logs whenever a user runs a forecast).
 Authentication (/auth/login, /auth/register): Standard secure login flows that issue a 7-day JWT Bearer token.
-Upload (/upload): Intercepts the raw CSV file from the frontend, saves it locally as data/user_{username}_data.csv, and validates its headers.
-API Handlers (/forecast, /recommend, /insights): These endpoints act as bridges. When the React app requests data, the backend verifies the JWT token, pulls that specific user's saved CSV from the disk, and hands it off to 
+Upload (/upload): Intercepts the raw CSV file from the frontend, saves it locally as data/user*{username}\_data.csv, and validates its headers.
+API Handlers (/forecast, /recommend, /insights): These endpoints act as bridges. When the React app requests data, the backend verifies the JWT token, pulls that specific user's saved CSV from the disk, and hands it off to
 
 services.py
- to do the actual math.
-2. 
+to do the actual math.
+
+2.
 
 services.py
- (The Mathematical Brain)
+(The Mathematical Brain)
 This file houses all of the strict statistical logic and machine learning logic.
-
 
 generate_forecast()
 : The core AI engine. It does something really smart—it runs an internal "Tournament".
