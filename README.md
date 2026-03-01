@@ -1,449 +1,424 @@
-SmartStock AI
+# SmartStock AI
 
-AI-Powered Inventory Demand Forecasting & Intelligent Restocking System
+AI-Powered Inventory Demand Forecasting & Intelligent Restocking System.
 
-Live Demo: https://overlock-bucketlist-1lbz.vercel.app/
-
-Demo Video: https://www.loom.com/share/7b184df315a444c6818791ee3d9c512a
-
-Presentation (PPT): https://docs.google.com/presentation/d/1wdpD4sp2Pk8F6DHxV_89BZjLjeNiu0Bj/edit?usp=drive_link&ouid=104570748730102143012&rtpof=true&sd=true
-
+Live Demo: https://overlock-bucketlist-1lbz.vercel.app/  
+Demo Video: https://www.loom.com/share/7b184df315a444c6818791ee3d9c512a  
+Presentation (PPT): https://docs.google.com/presentation/d/1wdpD4sp2Pk8F6DHxV_89BZjLjeNiu0Bj/edit?usp=drive_link&ouid=104570748730102143012&rtpof=true&sd=true  
 GitHub Repository: https://github.com/Puxhkar/OVERLOCK_BUCKETLIST
 
-1. Problem Statement
-   Problem Title
+---
+
+# One-line project description.
+
+A full-stack AI-powered web application that forecasts SKU-level inventory demand and generates intelligent restocking recommendations using ensemble time-series models.
+
+---
+
+# 1. Problem Statement
+
+## Problem Title
 
 Unpredictable Inventory Demand and Stock Imbalance in SMEs
 
-Problem Description
+## Problem Description
 
 Small and medium-sized enterprises (SMEs) struggle to forecast product demand accurately using traditional spreadsheet-based or manual methods. These approaches fail to capture seasonality, trends, and demand volatility, leading to inefficient inventory decisions.
 
 As a result, businesses face:
 
-Frequent stockouts and lost sales
+- Frequent stockouts and lost sales
+- Excess inventory and increased holding costs
+- Capital lock-in and cash flow issues
+- Reactive and inefficient supply chain planning
 
-Excess inventory and increased holding costs
+## Target Users
 
-Capital lock-in and cash flow issues
+- Retail Store Managers
+- Inventory Planners
+- E-commerce Store Owners
+- FMCG Distributors
+- Direct-to-Consumer (D2C) Brands
 
-Reactive and inefficient supply chain planning
+## Existing Gaps
 
-Target Users
+- Excel-based forecasting ignores seasonality and trends
+- Manual forecasting introduces human bias
+- Enterprise-grade ERP systems are costly and complex
+- Most AI tools require heavy infrastructure
+- Forecast uncertainty and safety stock are rarely quantified
 
-Retail Store Managers
+---
 
-Inventory Planners
+# 2. Problem Understanding & Approach
 
-E-commerce Store Owners
-
-FMCG Distributors
-
-Direct-to-Consumer (D2C) Brands
-
-Existing Gaps
-
-Excel-based forecasting ignores seasonality and trends
-
-Manual forecasting introduces human bias
-
-Enterprise-grade ERP systems are costly and complex
-
-Most AI tools require heavy infrastructure
-
-Forecast uncertainty and safety stock are rarely quantified
-
-2. Problem Understanding & Approach
-   Root Cause Analysis
+## Root Cause Analysis
 
 Inventory demand is inherently time-series data composed of:
 
-Trend: long-term growth or decline
-
-Seasonality: recurring periodic patterns
-
-Residual noise: random fluctuations
+- Trend: long-term growth or decline
+- Seasonality: recurring periodic patterns
+- Residual noise: random fluctuations
 
 Most SMEs lack:
 
-Time-series decomposition techniques
+- Time-series decomposition techniques
+- Scientific model evaluation methods
+- Statistical safety stock computation
+- Interpretable forecasting tools
 
-Scientific model evaluation methods
-
-Statistical safety stock computation
-
-Interpretable forecasting tools
-
-Solution Approach
+## Solution Strategy
 
 Design a full-stack AI system that:
 
-Accepts historical SKU-level sales data
+- Accepts historical SKU-level sales data
+- Automatically validates and preprocesses CSV input
+- Trains multiple forecasting models
+- Selects the best-performing model using RMSE
+- Computes confidence intervals and safety stock
+- Generates actionable restocking insights
+- Presents results via an intuitive dashboard
 
-Automatically validates and preprocesses CSV input
+---
 
-Trains multiple forecasting models
+# 3. Proposed Solution
 
-Selects the best-performing model using RMSE
-
-Computes confidence intervals and safety stock
-
-Generates actionable restocking insights
-
-Presents results via an intuitive dashboard
-
-3. Proposed Solution
-   Solution Overview
+## Solution Overview
 
 SmartStock AI is a SaaS-style web application that provides SKU-level demand forecasting and automated restocking recommendations using ensemble time-series models.
 
-Core Idea
+## Core Idea
 
 Democratize enterprise-grade inventory forecasting by delivering accurate, interpretable, and automated AI insights through a simple web interface.
 
-Key Features
+## Key Features
 
-CSV upload with schema validation
+- CSV upload with schema validation
+- SKU-level demand forecasting
+- Ensemble forecasting engine:
+  - Moving Average
+  - Holt-Winters
+  - Prophet
+- Automatic model selection using RMSE
+- Time-series decomposition
+- Forecast confidence intervals
+- Safety stock and reorder point calculation
+- Business insight generation
 
-SKU-level demand forecasting
+---
 
-Ensemble forecasting engine
+# 4. System Architecture
 
-Moving Average
+## High-Level Flow
 
-Holt-Winters
+User → Frontend → Backend → Model → Database → Response
 
-Prophet
+## Architecture Description
 
-Automatic model selection using RMSE
+**Frontend (React + Vite)**
 
-Time-series decomposition
+- User interface and dashboard
+- SKU selection and KPI display
+- Forecast and confidence interval visualization
 
-Forecast confidence intervals
+**Backend (FastAPI)**
 
-Safety stock and reorder point calculation
+- CSV ingestion and validation
+- Forecast execution and metric computation
+- Business logic and insights generation
 
-Business insight generation
+**Model Layer**
 
-4. System Architecture
-   High-Level Flow
+- Multiple forecasting models
+- RMSE-based model comparison
+- Confidence interval computation
 
-User → Frontend → Backend → Forecasting Models → Response
+**Database Layer (MVP)**
 
-Architecture Description
+- In-memory data processing
+- Optional local caching
 
-Frontend (React + Vite)
+**Response Layer**
 
-User interface and dashboard
+- JSON output containing forecasts, metrics, and recommendations
 
-SKU selection and KPI display
+## Architecture Diagram
 
-Forecast and confidence interval visualization
+(Add system architecture diagram image here)
 
-Backend (FastAPI)
+---
 
-CSV ingestion and validation
+# 5. Database Design
 
-Forecast execution and metric computation
+## ER Diagram
 
-Business logic and insights generation
+(Add ER diagram image here)
 
-Model Layer
+## ER Diagram Description
 
-Multiple forecasting models
+The MVP uses in-memory processing to ensure fast computation and protect user data privacy. Sales data is parsed, structured, and grouped by SKU. Future versions can integrate PostgreSQL for persistence and Redis for caching.
 
-RMSE-based model comparison
+---
 
-Confidence interval computation
+# 6. Dataset Selected
 
-Database Layer (MVP)
-
-In-memory data processing
-
-Optional local caching
-
-Response Layer
-
-JSON output containing forecasts, metrics, and recommendations
-
-5. Data Management & Design
-   Data Handling Strategy
-
-The MVP uses in-memory processing to:
-
-Ensure fast computation
-
-Protect user data privacy
-
-Avoid external storage dependency
-
-Sales data is parsed, structured, and grouped by SKU.
-Future versions can integrate PostgreSQL for persistence and Redis for caching.
-
-6. Dataset Description
-   Dataset Used
+## Dataset Name
 
 Retail SKU Demand Dataset (Synthetic Sample Data)
 
-Source
+## Source
 
 Custom-generated datasets:
 
-example_data.csv
+- example_data.csv
+- advanced_retail_demand.csv
 
-advanced_retail_demand.csv
-
-Data Type
+## Data Type
 
 Time-series sales data at SKU level
 
-Preprocessing Steps
+## Selection Reason
 
-Date parsing and validation
+Contains realistic SKU-level historical demand patterns with seasonal variation and trend behavior suitable for forecasting.
 
-Chronological sorting
+## Preprocessing Steps
 
-Missing value handling
+- Date parsing and validation
+- Chronological sorting
+- Missing value handling
+- Frequency detection
+- SKU-wise grouping
+- Time-series array conversion
 
-Frequency detection
+---
 
-SKU-wise grouping
+# 7. Model Selected
 
-Time-series array conversion
+## Model Name
 
-7. Forecasting Models
-   Model Architecture
+Ensemble Time-Series Forecasting System  
+(Components: Moving Average, Holt-Winters, Prophet)
 
-Ensemble Time-Series Forecasting System
+## Selection Reasoning
 
-Components:
+- Moving Average: baseline smoothing
+- Holt-Winters: trend and seasonality modeling
+- Prophet: change-point and multi-seasonality handling
+- Ensemble approach improves robustness
 
-Moving Average
+## Alternatives Considered
 
-Holt-Winters
+- ARIMA: complex parameter tuning
+- LSTM: requires large datasets and GPUs
+- Single-model approaches: insufficient accuracy
 
-Prophet
+## Evaluation Metrics
 
-Model Selection Rationale
+- Root Mean Squared Error (RMSE)
+- Residual standard deviation
+- 95% confidence interval bounds
 
-Moving Average: baseline smoothing
+---
 
-Holt-Winters: trend and seasonality modeling
+# 8. Technology Stack
 
-Prophet: change-point and multi-seasonality handling
+## Frontend
 
-Ensemble approach improves robustness
+- React
+- Vite
+- Recharts
+- Lucide-React
 
-Alternatives Considered
+## Backend
 
-ARIMA: complex parameter tuning
+- FastAPI
+- Uvicorn
 
-LSTM: requires large datasets and GPUs
+## ML/AI
 
-Single-model approaches: insufficient accuracy
+- Pandas
+- NumPy
+- statsmodels
+- Prophet
+- scikit-learn
 
-Evaluation Metrics
+## Database
 
-Root Mean Squared Error (RMSE)
+- In-memory processing
+- Optional local caching
 
-Residual standard deviation
+## Deployment
 
-95% confidence interval bounds
+- Backend: Render
+- Frontend: Vercel / Netlify
 
-8. Technology Stack
-   Frontend
+---
 
-React
+# 9. API Documentation & Testing
 
-Vite
+## API Endpoints List
 
-Recharts
+### Endpoint 1: POST /upload
 
-Lucide-React
+- Accepts CSV file
+- Validates schema
+- Returns dataset summary
 
-Backend
+### Endpoint 2: POST /forecast
 
-FastAPI
-
-Uvicorn
-
-Machine Learning
-
-Pandas
-
-NumPy
-
-statsmodels
-
-Prophet
-
-scikit-learn
-
-Deployment
-
-Backend: Render
-
-Frontend: Vercel / Netlify
-
-9. API Design & Testing
-   API Endpoints
-
-POST /upload
-
-Accepts CSV file
-
-Validates schema
-
-Returns dataset summary
-
-POST /forecast
 Inputs:
 
-SKU
-
-Forecast horizon
-
-Lead time
+- SKU
+- Forecast horizon
+- Lead time
 
 Outputs:
 
-Forecast values
+- Forecast values
+- Confidence intervals
+- Selected model
+- RMSE score
+- Safety stock
+- Reorder point
 
-Confidence intervals
+### Endpoint 3: GET /insights
 
-Selected model
+- Returns business insights based on forecast results
 
-RMSE score
+## API Testing Screenshots
 
-Safety stock
+(Add Postman / Thunder Client screenshots here)
 
-Reorder point
+---
 
-GET /insights
+# 10. Module-wise Development & Deliverables
 
-Returns business insights based on forecast results
+## Checkpoint 1: Research & Planning
 
-10. Development Milestones
-    Phase 1: Research & Planning
+Deliverables:
 
-Model selection
+- Model selection
+- Metric definition
+- Architecture design
 
-Metric definition
+## Checkpoint 2: Backend Development
 
-Architecture design
+Deliverables:
 
-Phase 2: Backend Development
+- API implementation
+- CSV parsing
+- Forecast engine
 
-API implementation
+## Checkpoint 3: Frontend Development
 
-CSV parsing
+Deliverables:
 
-Forecast engine
+- Dashboard UI
+- Charts and KPIs
+- SKU selection
 
-Phase 3: Frontend Development
+## Checkpoint 4: Model Training
 
-Dashboard UI
+Deliverables:
 
-Charts and KPIs
+- Ensemble logic
+- RMSE-based selection
+- Confidence interval computation
 
-SKU selection
+## Checkpoint 5: Model Integration
 
-Phase 4: Model Integration
+Deliverables:
 
-Ensemble logic
+- Frontend-backend integration
+- Visualization binding
+- End-to-end validation
 
-RMSE-based selection
+## Checkpoint 6: Deployment
 
-Visualization binding
+Deliverables:
 
-Phase 5: Deployment
+- Backend hosting
+- Frontend deployment
+- Environment setup
 
-Backend hosting
+---
 
-Frontend deployment
+# 11. End-to-End Workflow
 
-Environment setup
+1. User uploads historical sales data
+2. Backend validates and preprocesses input
+3. Data grouped by SKU
+4. Multiple models are trained
+5. Best model selected using RMSE
+6. Forecast generated with confidence bounds
+7. Safety stock and reorder point calculated
+8. Insights generated
+9. Results visualized on dashboard
 
-11. End-to-End Workflow
+---
 
-User uploads historical sales data
+# 12. Demo & Video
 
-Backend validates and preprocesses input
+Live Demo Link: https://overlock-bucketlist-1lbz.vercel.app/  
+Demo Video Link: https://www.loom.com/share/7b184df315a444c6818791ee3d9c512a  
+GitHub Repository: https://github.com/Puxhkar/OVERLOCK_BUCKETLIST
 
-Data grouped by SKU
+---
 
-Multiple models are trained
+# 13. Hackathon Deliverables Summary
 
-Best model selected using RMSE
+- Fully functional full-stack forecasting system
+- Ensemble model-based forecasting
+- Confidence interval visualization
+- SKU-level demand prediction
+- Automated restocking recommendations
+- SaaS-style modern UI
 
-Forecast generated with confidence bounds
+---
 
-Safety stock and reorder point calculated
+# 14. Team Roles & Responsibilities
 
-Insights generated
+| Member Name     | Role                  | Responsibilities                         |
+| --------------- | --------------------- | ---------------------------------------- |
+| Harshit Agrawal | ML & System Architect | Model design, backend logic, evaluation  |
+| Pushkar Gupta   | Frontend Developer    | UI development, dashboard implementation |
+| Neha Sharma     | Data & Testing Lead   | Dataset validation, API testing          |
 
-Results visualized on dashboard
+---
 
-12. Hackathon Deliverables
+# 15. Future Scope & Scalability
 
-Fully functional full-stack forecasting system
+## Short-Term
 
-Ensemble model-based forecasting
+- Multi-SKU batch forecasting
+- PDF report generation
+- Stockout alerts
 
-Confidence interval visualization
+## Long-Term
 
-SKU-level demand prediction
+- Deep learning models (LSTM)
+- AutoML tuning
+- ERP integrations
+- Multi-warehouse optimization
+- Microservices-based cloud architecture
 
-Automated restocking recommendations
+---
 
-SaaS-style modern UI
+# 16. Known Limitations
 
-13. Team Roles
-    Name Role Responsibilities
-    Harshit Agrawal ML & System Architect Model design, backend logic, evaluation
-    Pushkar Gupta Frontend Developer UI development, dashboard implementation
-    Neha Sharma Data & Testing Lead Dataset validation, API testing
-14. Future Scope
-    Short-Term
+- Requires clean historical data
+- Cannot predict rare black-swan events
+- Prophet adds computational overhead
+- No real-time external demand signals
 
-Multi-SKU batch forecasting
+---
 
-PDF report generation
-
-Stockout alerts
-
-Long-Term
-
-Deep learning models (LSTM)
-
-AutoML tuning
-
-ERP integrations
-
-Multi-warehouse optimization
-
-Microservices-based cloud architecture
-
-15. Limitations
-
-Requires clean historical data
-
-Cannot predict rare black-swan events
-
-Prophet adds computational overhead
-
-No real-time external demand signals
-
-16. Impact
+# 17. Impact
 
 SmartStock AI enables businesses to:
 
-Reduce stockouts
-
-Optimize inventory holding costs
-
-Improve cash flow
-
-Make data-driven inventory decisions
-
-Transition from reactive to predictive inventory management
+- Reduce stockouts
+- Optimize inventory holding costs
+- Improve cash flow
+- Make data-driven inventory decisions
+- Transition from reactive to predictive inventory management
