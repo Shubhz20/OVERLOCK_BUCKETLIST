@@ -4,6 +4,38 @@ import { Package, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';
 
+const StatusBadge = ({ status }) => {
+    if (status === 'Stockout') return <span style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 500 }}><AlertCircle size={16} /> Stockout</span>;
+    if (status === 'Low Stock') return <span style={{ color: '#475569', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 500 }}><AlertCircle size={16} /> Low Stock</span>;
+    if (status === 'Healthy') return <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '5px' }}><CheckCircle size={16} /> Healthy</span>;
+    return null;
+};
+
+const PortfolioRow = ({ item, onSelectSku }) => (
+    <tr className="hover-scale-row" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+        <td style={{ padding: '1rem', fontWeight: 600, color: 'var(--text-main)' }}>{item.sku}</td>
+        <td style={{ padding: '1rem' }}>
+            <span style={{
+                padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 600,
+                background: item.abc_class === 'A' ? 'rgba(0,0,0,0.8)' : item.abc_class === 'B' ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.03)',
+                color: item.abc_class === 'A' ? 'white' : 'var(--text-main)'
+            }}>
+                Class {item.abc_class}
+            </span>
+        </td>
+        <td style={{ padding: '1rem' }}>{item.total_sales.toLocaleString()}</td>
+        <td style={{ padding: '1rem' }}>{item.current_stock.toLocaleString()}</td>
+        <td style={{ padding: '1rem' }}>
+            <StatusBadge status={item.status} />
+        </td>
+        <td style={{ padding: '1rem' }}>
+            <button className="btn btn-outline hover-scale" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} onClick={() => onSelectSku(item.sku)}>
+                Analyze <TrendingUp size={14} />
+            </button>
+        </td>
+    </tr>
+);
+
 const PortfolioOverview = ({ onSelectSku }) => {
     const [portfolio, setPortfolio] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -56,30 +88,7 @@ const PortfolioOverview = ({ onSelectSku }) => {
                     </thead>
                     <tbody>
                         {portfolio.map((item, idx) => (
-                            <tr key={idx} className="hover-scale-row" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                                <td style={{ padding: '1rem', fontWeight: 600, color: 'var(--text-main)' }}>{item.sku}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    <span style={{
-                                        padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 600,
-                                        background: item.abc_class === 'A' ? 'rgba(0,0,0,0.8)' : item.abc_class === 'B' ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.03)',
-                                        color: item.abc_class === 'A' ? 'white' : 'var(--text-main)'
-                                    }}>
-                                        Class {item.abc_class}
-                                    </span>
-                                </td>
-                                <td style={{ padding: '1rem' }}>{item.total_sales.toLocaleString()}</td>
-                                <td style={{ padding: '1rem' }}>{item.current_stock.toLocaleString()}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    {item.status === 'Stockout' && <span style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 500 }}><AlertCircle size={16} /> Stockout</span>}
-                                    {item.status === 'Low Stock' && <span style={{ color: '#475569', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 500 }}><AlertCircle size={16} /> Low Stock</span>}
-                                    {item.status === 'Healthy' && <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '5px' }}><CheckCircle size={16} /> Healthy</span>}
-                                </td>
-                                <td style={{ padding: '1rem' }}>
-                                    <button className="btn btn-outline hover-scale" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} onClick={() => onSelectSku(item.sku)}>
-                                        Analyze <TrendingUp size={14} />
-                                    </button>
-                                </td>
-                            </tr>
+                            <PortfolioRow key={idx} item={item} onSelectSku={onSelectSku} />
                         ))}
                     </tbody>
                 </table>
