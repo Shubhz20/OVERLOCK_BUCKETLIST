@@ -4,16 +4,14 @@ import { History as HistoryIcon, Clock, Package, Activity } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';
 
-const History = ({ token, onSelect }) => {
+const History = ({ onSelect }) => {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const res = await axios.get(`${API_BASE}/history`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                const res = await axios.get(`${API_BASE}/history`);
                 setHistory(res.data);
             } catch (err) {
                 console.error('Failed to fetch history:', err);
@@ -22,8 +20,8 @@ const History = ({ token, onSelect }) => {
             }
         };
 
-        if (token) fetchHistory();
-    }, [token]);
+        fetchHistory();
+    }, []);
 
     if (loading) return <div className="loader" style={{ margin: '4rem auto' }}></div>;
 

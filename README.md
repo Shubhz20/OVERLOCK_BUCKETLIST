@@ -10,6 +10,11 @@ SmartStock AI is a full-stack AI-powered Inventory Demand Forecasting Web Applic
 - **Restocking Recommendations**: Statistically significant safety stock calculation.
 - **Smart Insights**: Rules-based NLP engine for real time business intelligence.
 
+Live Demo: https://overlock-bucketlist.vercel.app/
+Demo Video: https://www.loom.com/share/7b184df315a444c6818791ee3d9c512a
+Presentation (PPT): https://docs.google.com/presentation/d/1wdpD4sp2Pk8F6DHxV_89BZjLjeNiu0Bj/edit?usp=drive_link&ouid=104570748730102143012&rtpof=true&sd=true
+GitHub Repository: https://github.com/Puxhkar/OVERLOCK_BUCKETLIST
+
 ---
 
 ## 🏗️ Project Architecture
@@ -40,7 +45,8 @@ SmartStock-AI/
 cd backend
 python -m venv venv
 source venv/bin/activate
-pip install fastapi uvicorn pandas numpy statsmodels scikit-learn prophet python-multipart pydantic
+pip install fastapi uvicorn pandas numpy statsmodels scikit-learn prophet python-multipart pydantic PyJWT bcrypt
+# Note: Added PyJWT and bcrypt to the install command as they are used in main.py
 
 # Run the backend server
 uvicorn main:app --reload --port 8000
