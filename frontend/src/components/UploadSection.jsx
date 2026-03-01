@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { UploadCloud, FileText, Database, Zap } from 'lucide-react';
+import { UploadCloud, FileText } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';
+
+const validateCsvFile = (file) => file?.name.endsWith('.csv');
 
 const UploadSection = ({ onUploadSuccess }) => {
     const [file, setFile] = useState(null);
@@ -12,7 +14,7 @@ const UploadSection = ({ onUploadSuccess }) => {
     const handleDrop = (e) => {
         e.preventDefault();
         const droppedFile = e.dataTransfer.files[0];
-        if (droppedFile?.name.endsWith('.csv')) {
+        if (validateCsvFile(droppedFile)) {
             setFile(droppedFile);
             setError('');
         } else {
@@ -22,7 +24,7 @@ const UploadSection = ({ onUploadSuccess }) => {
 
     const handleChange = (e) => {
         const selectedFile = e.target.files[0];
-        if (selectedFile?.name.endsWith('.csv')) {
+        if (validateCsvFile(selectedFile)) {
             setFile(selectedFile);
             setError('');
         } else {
@@ -87,6 +89,7 @@ const UploadSection = ({ onUploadSuccess }) => {
                     Provide your historical sales records in CSV format to generate AI-powered forecasts and restocking recommendations.
                 </p>
 
+                {/* Drop Zone */}
                 <div
                     className="upload-area hover-scale"
                     onDragOver={(e) => e.preventDefault()}
@@ -129,6 +132,7 @@ const UploadSection = ({ onUploadSuccess }) => {
                     * Load Demo CSV to test the platform with sample data.
                 </div>
 
+                {/* File Preview */}
                 {file && (
                     <div className="animate-fade-in" style={{ marginTop: '3rem', display: 'flex', alignItems: 'center', gap: '15px', background: 'var(--bg-dark)', border: '1px solid var(--border-subtle)', padding: '1.5rem', borderRadius: '16px', textAlign: 'left', position: 'relative', zIndex: 10 }}>
                         <div style={{ background: 'white', padding: '10px', borderRadius: '12px', boxShadow: 'var(--shadow-card)' }}>
@@ -149,6 +153,7 @@ const UploadSection = ({ onUploadSuccess }) => {
                     </div>
                 )}
 
+                {/* Error message */}
                 {error && (
                     <div className="animate-fade-in" style={{ color: 'var(--danger)', background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '1rem', marginTop: '1.5rem', borderRadius: '8px', position: 'relative', zIndex: 10 }}>
                         {error}
