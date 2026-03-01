@@ -6,12 +6,12 @@ Live Demo: https://overlock-bucketlist-1lbz.vercel.app/
 
 Demo Video: https://www.loom.com/share/7b184df315a444c6818791ee3d9c512a
 
-Presentation (PPT): [https://drive.google.com/file/d/1Ycx-lIK1MFiB3f5rxeM9Z6XkC4VnCgyM/view](https://drive.google.com/file/d/1SIEidYD6AlmGh0Q-dVYgWIK2qiCAnWqI/view?usp=sharing)
+Presentation (PPT): https://docs.google.com/presentation/d/1wdpD4sp2Pk8F6DHxV_89BZjLjeNiu0Bj/edit?usp=drive_link&ouid=104570748730102143012&rtpof=true&sd=true
 
 GitHub Repository: https://github.com/Puxhkar/OVERLOCK_BUCKETLIST
 
 1. Problem Statement
-Problem Title
+   Problem Title
 
 Unpredictable Inventory Demand and Stock Imbalance in SMEs
 
@@ -54,7 +54,7 @@ Most AI tools require heavy infrastructure
 Forecast uncertainty and safety stock are rarely quantified
 
 2. Problem Understanding & Approach
-Root Cause Analysis
+   Root Cause Analysis
 
 Inventory demand is inherently time-series data composed of:
 
@@ -93,7 +93,7 @@ Generates actionable restocking insights
 Presents results via an intuitive dashboard
 
 3. Proposed Solution
-Solution Overview
+   Solution Overview
 
 SmartStock AI is a SaaS-style web application that provides SKU-level demand forecasting and automated restocking recommendations using ensemble time-series models.
 
@@ -126,7 +126,7 @@ Safety stock and reorder point calculation
 Business insight generation
 
 4. System Architecture
-High-Level Flow
+   High-Level Flow
 
 User → Frontend → Backend → Forecasting Models → Response
 
@@ -167,7 +167,7 @@ Response Layer
 JSON output containing forecasts, metrics, and recommendations
 
 5. Data Management & Design
-Data Handling Strategy
+   Data Handling Strategy
 
 The MVP uses in-memory processing to:
 
@@ -181,7 +181,7 @@ Sales data is parsed, structured, and grouped by SKU.
 Future versions can integrate PostgreSQL for persistence and Redis for caching.
 
 6. Dataset Description
-Dataset Used
+   Dataset Used
 
 Retail SKU Demand Dataset (Synthetic Sample Data)
 
@@ -212,7 +212,7 @@ SKU-wise grouping
 Time-series array conversion
 
 7. Forecasting Models
-Model Architecture
+   Model Architecture
 
 Ensemble Time-Series Forecasting System
 
@@ -251,7 +251,7 @@ Residual standard deviation
 95% confidence interval bounds
 
 8. Technology Stack
-Frontend
+   Frontend
 
 React
 
@@ -286,7 +286,7 @@ Backend: Render
 Frontend: Vercel / Netlify
 
 9. API Design & Testing
-API Endpoints
+   API Endpoints
 
 POST /upload
 
@@ -324,7 +324,7 @@ GET /insights
 Returns business insights based on forecast results
 
 10. Development Milestones
-Phase 1: Research & Planning
+    Phase 1: Research & Planning
 
 Model selection
 
@@ -399,12 +399,12 @@ Automated restocking recommendations
 SaaS-style modern UI
 
 13. Team Roles
-Name	Role	Responsibilities
-Harshit Agrawal	ML & System Architect	Model design, backend logic, evaluation
-Pushkar Gupta	Frontend Developer	UI development, dashboard implementation
-Neha Sharma	Data & Testing Lead	Dataset validation, API testing
+    Name Role Responsibilities
+    Harshit Agrawal ML & System Architect Model design, backend logic, evaluation
+    Pushkar Gupta Frontend Developer UI development, dashboard implementation
+    Neha Sharma Data & Testing Lead Dataset validation, API testing
 14. Future Scope
-Short-Term
+    Short-Term
 
 Multi-SKU batch forecasting
 
