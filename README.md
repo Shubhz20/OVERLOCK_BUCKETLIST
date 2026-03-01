@@ -6,7 +6,7 @@ Live Demo: https://overlock-bucketlist-1lbz.vercel.app/
 
 Demo Video: https://www.loom.com/share/7b184df315a444c6818791ee3d9c512a
 
-Presentation (PPT): https://drive.google.com/file/d/1Ycx-lIK1MFiB3f5rxeM9Z6XkC4VnCgyM/view
+Presentation (PPT): [https://drive.google.com/file/d/1Ycx-lIK1MFiB3f5rxeM9Z6XkC4VnCgyM/view](https://drive.google.com/file/d/1SIEidYD6AlmGh0Q-dVYgWIK2qiCAnWqI/view?usp=sharing)
 
 GitHub Repository: https://github.com/Puxhkar/OVERLOCK_BUCKETLIST
 
