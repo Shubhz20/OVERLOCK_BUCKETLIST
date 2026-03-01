@@ -4,7 +4,7 @@ import { UploadCloud, FileText } from 'lucide-react';
 
 import { API_BASE } from '../config';
 
-const UploadSection = ({ onUploadSuccess, token }) => {
+const UploadSection = ({ onUploadSuccess }) => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -39,10 +39,7 @@ const UploadSection = ({ onUploadSuccess, token }) => {
 
         try {
             const res = await axios.post(`${API_BASE}/upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
-                },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
             onUploadSuccess(res.data);
         } catch (err) {
