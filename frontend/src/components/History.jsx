@@ -4,6 +4,22 @@ import { History as HistoryIcon, Clock, Package, Activity } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';
 
+const HistoryItem = ({ record, onSelect }) => (
+    <div className="glass-panel hover-scale" onClick={() => onSelect(record.sku)} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 2rem', background: 'var(--bg-dark)', cursor: 'pointer', border: '1px solid var(--border-subtle)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <Package size={20} color="var(--accent-primary)" />
+            <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)' }}>{record.sku}</span>
+            <span style={{ fontSize: '0.85rem', background: 'white', padding: '4px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)', border: '1px solid var(--border-subtle)' }}>
+                {record.action}
+            </span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+            <Clock size={16} />
+            {new Date(record.timestamp + 'Z').toLocaleString()}
+        </div>
+    </div>
+);
+
 const History = ({ onSelect }) => {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -45,19 +61,7 @@ const History = ({ onSelect }) => {
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {history.map((record, idx) => (
-                        <div key={idx} className="glass-panel hover-scale" onClick={() => onSelect(record.sku)} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 2rem', background: 'var(--bg-dark)', cursor: 'pointer', border: '1px solid var(--border-subtle)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <Package size={20} color="var(--accent-primary)" />
-                                <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)' }}>{record.sku}</span>
-                                <span style={{ fontSize: '0.85rem', background: 'white', padding: '4px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)', border: '1px solid var(--border-subtle)' }}>
-                                    {record.action}
-                                </span>
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                                <Clock size={16} />
-                                {new Date(record.timestamp + 'Z').toLocaleString()}
-                            </div>
-                        </div>
+                        <HistoryItem key={idx} record={record} onSelect={onSelect} />
                     ))}
                 </div>
             )}
