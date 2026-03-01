@@ -8,7 +8,7 @@ import Dashboard from './components/Dashboard';
 import Auth from './components/Auth';
 import History from './components/History';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'http://';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
