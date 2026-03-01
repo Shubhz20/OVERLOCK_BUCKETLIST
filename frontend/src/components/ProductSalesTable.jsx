@@ -69,6 +69,52 @@ const mockProducts = [
     }
 ];
 
+const ProductRow = ({ product }) => {
+    return (
+        <tr style={{ borderBottom: '1px solid var(--border-subtle)' }} className="hover-scale-row">
+            <td style={{ padding: '1rem 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, color: 'var(--text-muted)', overflow: 'hidden', border: '1px solid var(--border-subtle)' }}>
+                        {product.image ? (
+                            <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                            product.name.charAt(0)
+                        )}
+                    </div>
+                    <div>
+                        <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{product.name}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{product.category}</div>
+                    </div>
+                </div>
+            </td>
+            <td style={{ padding: '1rem 0', color: product.stock < 20 ? 'var(--danger)' : 'var(--text-main)', fontWeight: product.stock < 20 ? 600 : 400 }}>
+                {product.stock}
+            </td>
+            <td style={{ padding: '1rem 0', color: 'var(--text-muted)' }}>{product.price}</td>
+            <td style={{ padding: '1rem 0', color: 'var(--text-muted)' }}>{product.profitMargin}</td>
+            <td style={{ padding: '1rem 0', fontWeight: 500 }}>{product.sales30d}</td>
+            <td style={{ padding: '1rem 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {product.status === 'success' && <ArrowUpRight size={16} color="var(--success)" />}
+                    {product.status === 'danger' && <ArrowDownRight size={16} color="var(--danger)" />}
+                    {product.status === 'neutral' && <Minus size={16} color="var(--text-muted)" />}
+
+                    <div>
+                        <div style={{
+                            fontWeight: 600,
+                            color: product.status === 'success' ? 'var(--success)' :
+                                (product.status === 'danger' ? 'var(--danger)' : 'var(--text-muted)')
+                        }}>
+                            {product.recommendation}
+                        </div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{product.action}</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    );
+};
+
 const ProductSalesTable = () => {
     return (
         <div className="glass chart-container" style={{ gridColumn: '1 / -1', padding: '2rem' }}>
@@ -91,47 +137,7 @@ const ProductSalesTable = () => {
                     </thead>
                     <tbody>
                         {mockProducts.map((product) => (
-                            <tr key={product.id} style={{ borderBottom: '1px solid var(--border-subtle)' }} className="hover-scale-row">
-                                <td style={{ padding: '1rem 0' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                        <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, color: 'var(--text-muted)', overflow: 'hidden', border: '1px solid var(--border-subtle)' }}>
-                                            {product.image ? (
-                                                <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                            ) : (
-                                                product.name.charAt(0)
-                                            )}
-                                        </div>
-                                        <div>
-                                            <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{product.name}</div>
-                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{product.category}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td style={{ padding: '1rem 0', color: product.stock < 20 ? 'var(--danger)' : 'var(--text-main)', fontWeight: product.stock < 20 ? 600 : 400 }}>
-                                    {product.stock}
-                                </td>
-                                <td style={{ padding: '1rem 0', color: 'var(--text-muted)' }}>{product.price}</td>
-                                <td style={{ padding: '1rem 0', color: 'var(--text-muted)' }}>{product.profitMargin}</td>
-                                <td style={{ padding: '1rem 0', fontWeight: 500 }}>{product.sales30d}</td>
-                                <td style={{ padding: '1rem 0' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        {product.status === 'success' && <ArrowUpRight size={16} color="var(--success)" />}
-                                        {product.status === 'danger' && <ArrowDownRight size={16} color="var(--danger)" />}
-                                        {product.status === 'neutral' && <Minus size={16} color="var(--text-muted)" />}
-
-                                        <div>
-                                            <div style={{
-                                                fontWeight: 600,
-                                                color: product.status === 'success' ? 'var(--success)' :
-                                                    (product.status === 'danger' ? 'var(--danger)' : 'var(--text-muted)')
-                                            }}>
-                                                {product.recommendation}
-                                            </div>
-                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{product.action}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            <ProductRow key={product.id} product={product} />
                         ))}
                     </tbody>
                 </table>
