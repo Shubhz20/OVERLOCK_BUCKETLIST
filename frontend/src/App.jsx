@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Package, Activity, History as HistoryIcon, LayoutDashboard, Search, Bell, UploadCloud, Asterisk, Home, Shirt, ShoppingCart, Truck, Users, Settings } from 'lucide-react';
+import { Package, Activity, History as HistoryIcon, LayoutDashboard, Search, Bell, UploadCloud, Asterisk, Home, Shirt, ShoppingCart, Truck, Users, Settings, ArrowLeft } from 'lucide-react';
 
 import LandingPage from './components/LandingPage';
 import UploadSection from './components/UploadSection';
@@ -97,12 +97,12 @@ function App() {
             <span style={{ cursor: 'pointer', transition: 'color 0.2s ease' }} onMouseOver={(e) => e.target.style.color = 'var(--text-main)'} onMouseOut={(e) => e.target.style.color = 'var(--text-muted)'} onClick={() => document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' })}>Reviews</span>
           </div>
 
-          <button className="btn btn-primary hover-scale" onClick={() => setCurrentView(isUploaded ? 'dashboard' : 'upload')}>
-            {isUploaded ? 'Go to Dashboard' : 'Get Started'}
+          <button className="btn btn-primary hover-scale" onClick={() => setCurrentView('upload')}>
+            {isUploaded ? 'Upload New Data' : 'Get Started'}
           </button>
         </nav>
         <main>
-          <LandingPage onGetStarted={() => setCurrentView(isUploaded ? 'dashboard' : 'upload')} />
+          <LandingPage onGetStarted={() => setCurrentView('upload')} />
         </main>
       </div>
     );
@@ -112,38 +112,24 @@ function App() {
     <div className="app-container">
       {/* Top Navbar */}
       <nav className="top-navbar animate-fade-in">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'white' }}>
-          <div className="hover-scale" style={{ background: '#11111A', border: '1px solid rgba(255,255,255,0.05)', width: '38px', height: '38px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 10px rgba(0,0,0,0.2)' }} onClick={() => setCurrentView('landing')}>
-            <Asterisk size={20} color="white" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white' }}>
+          <div
+            className="hover-scale"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: '6px' }}
+            onClick={() => {
+              if (currentView === 'upload' && isUploaded) setCurrentView('dashboard');
+              else if (currentView === 'history') setCurrentView('dashboard');
+              else setCurrentView('landing');
+            }}
+            title="Go Back"
+          >
+            <ArrowLeft size={24} color="white" />
           </div>
-          <span style={{ fontWeight: 600, fontSize: '1.2rem', letterSpacing: '0.5px' }}>SmartStock AI</span>
+          <span style={{ fontWeight: 600, fontSize: '1.2rem', letterSpacing: '0.5px', marginLeft: '4px' }}>SmartStock AI</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div className={`navbar-icon ${currentView === 'landing' ? 'active' : ''}`} title="Home" onClick={() => setCurrentView('landing')}>
-            <Home size={20} />
-          </div>
-          <div className={`navbar-icon ${currentView === 'dashboard' ? 'active' : ''}`} title="Overview" onClick={() => setCurrentView('dashboard')}>
-            <LayoutDashboard size={20} />
-          </div>
-          <div className={`navbar-icon ${currentView === 'upload' ? 'active' : ''}`} title="Import Inventory" onClick={() => setCurrentView('upload')}>
-            <UploadCloud size={20} />
-          </div>
-          <div className="navbar-icon" title="Apparel Catalogue (Demo)" style={{ cursor: 'not-allowed', opacity: 0.4 }}>
-            <Shirt size={20} />
-          </div>
-          <div className="navbar-icon" title="Orders (Demo)" style={{ cursor: 'not-allowed', opacity: 0.4 }}>
-            <ShoppingCart size={20} />
-          </div>
-          <div className="navbar-icon" title="Logistics (Demo)" style={{ cursor: 'not-allowed', opacity: 0.4 }}>
-            <Truck size={20} />
-          </div>
-          <div className={`navbar-icon ${currentView === 'history' ? 'active' : ''}`} title="Search History" onClick={() => setCurrentView('history')}>
-            <HistoryIcon size={20} />
-          </div>
-          <div className="navbar-icon" title="Customers (Demo)" style={{ cursor: 'not-allowed', opacity: 0.4 }}>
-            <Users size={20} />
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+          {/* Navigation icons removed for simplicity. Use Back button. */}
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -159,26 +145,42 @@ function App() {
       {/* Main Area */}
       <div className="main-content">
         <header className="top-bar animate-fade-in">
-          <div>
-            <h1 style={{ fontSize: '1.8rem' }}>{currentView === 'history' ? 'History' : currentView === 'upload' ? 'Import Data' : 'Overview'}</h1>
-            <p style={{ color: 'var(--text-muted)' }}>Detailed supply chain information</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {/* Removed the ArrowLeft button here as per instruction */}
+            <div>
+              <h1 style={{ fontSize: '1.8rem', color: 'var(--text-main)', margin: 0 }}>
+                {currentView === 'history' ? 'History' : currentView === 'upload' ? 'Import Data' : 'Dashboard Overview'}
+              </h1>
+              <p style={{ color: 'var(--text-muted)', margin: '4px 0 0 0', fontSize: '0.95rem' }}>
+                {currentView === 'history' ? 'View past analyses and reports' : currentView === 'upload' ? 'Upload historical datasets for AI forecasting' : 'Detailed supply chain analytics and AI forecasts'}
+              </p>
+            </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             {currentView === 'dashboard' && isUploaded && skus.length > 0 && (
-              <div className="glass-panel" style={{ padding: '0.4rem 1rem', display: 'flex', gap: '8px', alignItems: 'center', background: 'white' }}>
-                <Package size={16} color="var(--text-muted)" />
-                <select
-                  className="input-field"
-                  style={{ fontSize: '0.85rem', padding: '0', border: 'none' }}
-                  value={selectedSku}
-                  onChange={(e) => setSelectedSku(e.target.value)}
+              <>
+                <div className="glass-panel" style={{ padding: '0.4rem 1rem', display: 'flex', gap: '8px', alignItems: 'center', background: 'white' }}>
+                  <Package size={16} color="var(--text-muted)" />
+                  <select
+                    className="input-field"
+                    style={{ fontSize: '0.85rem', padding: '0', border: 'none' }}
+                    value={selectedSku}
+                    onChange={(e) => setSelectedSku(e.target.value)}
+                  >
+                    {skus.map(sku => (
+                      <option key={sku} value={sku}>{sku}</option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  className="btn btn-primary hover-scale"
+                  style={{ fontSize: '0.85rem', padding: '0.5rem 1rem' }}
+                  onClick={() => setCurrentView('upload')}
                 >
-                  {skus.map(sku => (
-                    <option key={sku} value={sku}>{sku}</option>
-                  ))}
-                </select>
-              </div>
+                  <UploadCloud size={16} /> Update Data
+                </button>
+              </>
             )}
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '1rem' }}>

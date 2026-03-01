@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { UploadCloud, FileText } from 'lucide-react';
+import { UploadCloud, FileText, Database, Zap } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';
 
@@ -49,67 +49,111 @@ const UploadSection = ({ onUploadSuccess }) => {
         }
     };
 
+    const handleLoadDemo = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch('/demo.csv');
+            const blob = await response.blob();
+            const demoFile = new File([blob], 'demo.csv', { type: 'text/csv' });
+
+            const formData = new FormData();
+            formData.append('file', demoFile);
+
+            const res = await axios.post(`${API_BASE}/upload`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            onUploadSuccess(res.data);
+        } catch (err) {
+            console.error(err);
+            setError('Failed to load demo CSV. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div className="animate-fade-in" style={{ maxWidth: '1000px', margin: '4rem auto', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+        <div className="animate-fade-in" style={{ maxWidth: '800px', margin: '2rem auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div className="glass" style={{ padding: '4rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                {/* Background decorative elements */}
+                <div style={{ position: 'absolute', top: '-50px', left: '-50px', width: '200px', height: '200px', background: 'var(--accent-primary)', opacity: 0.05, borderRadius: '50%', filter: 'blur(40px)' }}></div>
+                <div style={{ position: 'absolute', bottom: '-50px', right: '-50px', width: '250px', height: '250px', background: 'var(--accent-secondary)', opacity: 0.05, borderRadius: '50%', filter: 'blur(50px)' }}></div>
 
-            {/* Hero Section */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
-                <div>
-                    <h1 style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '1rem', lineHeight: '1.2' }}>
-                        Inventory.<br /><span className="text-gradient">Optimized.</span>
-                    </h1>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.6' }}>
-                        Upload your historical sales data. Let our proprietary ensemble forecasting engine analyze trends, detect seasonality, and provide actionable restocking recommendations to minimize stockout overhead.
-                    </p>
+                <div style={{ background: 'var(--bg-dark)', width: '80px', height: '80px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem', boxShadow: 'var(--shadow-card)' }}>
+                    <UploadCloud size={40} color="var(--accent-primary)" />
                 </div>
-                <div style={{ padding: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-subtle)', borderRadius: '12px' }}>
-                    <img
-                        src="/inventory.png"
-                        alt="Minimalist Inventory"
-                        style={{ width: '100%', borderRadius: '8px', filter: 'brightness(0.95)', objectFit: 'cover' }}
-                    />
-                </div>
-            </div>
 
-            <div className="glass" style={{ padding: '3rem' }}>
-                <h2 style={{ marginBottom: '1rem', textAlign: 'center', fontWeight: '600' }}>Import Data Interface</h2>
-                <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2.5rem' }}>
-                    Schema: Date | SKU | Sales_Quantity | Current_Stock
+                <h2 style={{ fontSize: '2rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--text-main)' }}>Upload Sales Data</h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '3rem', maxWidth: '500px', margin: '0 auto 3rem' }}>
+                    Provide your historical sales records in CSV format to generate AI-powered forecasts and restocking recommendations.
                 </p>
 
                 <div
-                    className="upload-area"
+                    className="upload-area hover-scale"
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleDrop}
-                    style={{ padding: '4rem 2rem', border: '2px dashed var(--border-subtle)', borderRadius: '12px', background: 'var(--bg-dark)', textAlign: 'center' }}
+                    style={{
+                        padding: '4rem 2rem',
+                        border: '2px dashed var(--border-highlight)',
+                        borderRadius: '16px',
+                        background: 'rgba(124, 58, 237, 0.02)',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        zIndex: 10
+                    }}
                 >
-                    <UploadCloud size={48} color="var(--accent-primary)" style={{ marginBottom: '1rem', margin: '0 auto' }} />
-                    <h3 style={{ fontWeight: '600', marginTop: '1rem', fontSize: '1.2rem' }}>Drag & drop CSV payload</h3>
-                    <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 2rem' }}>or select file directly from your local machine</p>
-                    <label className="btn btn-primary" style={{ cursor: 'pointer' }}>
-                        Browse Files
-                        <input type="file" accept=".csv" onChange={handleChange} hidden />
-                    </label>
+                    <FileText size={48} color="var(--accent-primary)" style={{ marginBottom: '1.5rem', margin: '0 auto' }} />
+                    <h3 style={{ fontWeight: '600', fontSize: '1.25rem', color: 'var(--text-main)' }}>Drag & drop your CSV here</h3>
+                    <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 2rem' }}>or click below to browse your files</p>
+
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                        <label className="btn btn-primary shadow-glow hover-scale" style={{ cursor: 'pointer', padding: '0.8rem 1.5rem', boxShadow: 'var(--shadow-glow)' }}>
+                            Browse Local Files
+                            <input type="file" accept=".csv" onChange={handleChange} hidden />
+                        </label>
+                        <button
+                            className="btn btn-outline hover-scale"
+                            style={{ padding: '0.8rem 1.5rem', background: 'white' }}
+                            onClick={handleLoadDemo}
+                            disabled={loading}
+                        >
+                            {loading ? 'Loading Demo...' : 'Load Demo CSV'}
+                        </button>
+                    </div>
+                </div>
+
+                <div style={{ marginTop: '2.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>Required Schema:</span> Date | SKU | Sales_Quantity | Current_Stock
+                </div>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                    * Load Demo CSV to test the platform with sample data.
                 </div>
 
                 {file && (
-                    <div style={{ marginTop: '2rem', display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-dark)', border: '1px solid var(--border-subtle)', padding: '1rem', borderRadius: '12px' }}>
-                        <FileText size={24} color="var(--accent-primary)" />
+                    <div className="animate-fade-in" style={{ marginTop: '3rem', display: 'flex', alignItems: 'center', gap: '15px', background: 'var(--bg-dark)', border: '1px solid var(--border-subtle)', padding: '1.5rem', borderRadius: '16px', textAlign: 'left', position: 'relative', zIndex: 10 }}>
+                        <div style={{ background: 'white', padding: '10px', borderRadius: '12px', boxShadow: 'var(--shadow-card)' }}>
+                            <FileText size={32} color="var(--accent-primary)" />
+                        </div>
                         <div style={{ flex: 1 }}>
-                            <div style={{ fontWeight: '600' }}>{file.name}</div>
-                            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{(file.size / 1024).toFixed(1)} KB</div>
+                            <div style={{ fontWeight: '600', fontSize: '1.1rem', color: 'var(--text-main)' }}>{file.name}</div>
+                            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{(file.size / 1024).toFixed(1)} KB • Ready to process</div>
                         </div>
                         <button
-                            className="btn btn-primary"
+                            className="btn btn-primary hover-scale"
                             onClick={handleUpload}
                             disabled={loading}
+                            style={{ padding: '0.8rem 1.5rem', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: 'var(--shadow-glow)' }}
                         >
-                            {loading ? <div className="loader"></div> : 'Initialize Engine'}
+                            {loading ? <div className="loader" style={{ width: '18px', height: '18px', borderWidth: '2px' }}></div> : 'Initialize Engine'}
                         </button>
                     </div>
                 )}
 
-                {error && <div style={{ color: 'var(--danger)', background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '1rem', marginTop: '1.5rem', textAlign: 'center', borderRadius: 'var(--radius-sm)' }}>{error}</div>}
+                {error && (
+                    <div className="animate-fade-in" style={{ color: 'var(--danger)', background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '1rem', marginTop: '1.5rem', borderRadius: '8px', position: 'relative', zIndex: 10 }}>
+                        {error}
+                    </div>
+                )}
             </div>
         </div>
     );

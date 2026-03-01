@@ -141,7 +141,7 @@ const Dashboard = ({ loading, forecastData, insightsData, recommendData }) => {
                 </div>
             </div>
 
-            <div className="dashboard-grid has-sidebar">
+            <div className="dashboard-grid" style={{ gridTemplateColumns: '1fr' }}>
                 <div className="glass chart-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                         <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
@@ -205,12 +205,44 @@ const Dashboard = ({ loading, forecastData, insightsData, recommendData }) => {
                     </ResponsiveContainer>
                 </div>
 
+                {/* AI Recommendations & Features Section */}
+                <h3 style={{ marginTop: '2rem', marginBottom: '1rem', color: 'var(--text-main)', borderBottom: '2px solid var(--border-subtle)', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ background: 'var(--accent-primary)', color: 'white', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem' }}>AI Copilot</span> Actionable Intelligence
+                </h3>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem' }}>
+
+                    {/* Active Alerts / Timeline mock feature */}
+                    <div className="glass" style={{ padding: '1.5rem' }}>
+                        <h4 style={{ marginBottom: '1rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <AlertTriangle size={18} color="var(--warning)" /> Priority Alerts
+                        </h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div style={{ padding: '1rem', background: 'rgba(239, 68, 68, 0.05)', borderLeft: '4px solid var(--danger)', borderRadius: '4px' }}>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Just Now</div>
+                                <div style={{ fontWeight: 500, color: 'var(--text-main)' }}>Stockout Imminent: {forecastData.sku}</div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '4px' }}>Current trajectory depletes stock in 4 days. Approve expediting order.</div>
+                            </div>
+                            <div style={{ padding: '1rem', background: 'var(--bg-dark)', borderLeft: '4px solid var(--accent-primary)', borderRadius: '4px' }}>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>2 hrs ago</div>
+                                <div style={{ fontWeight: 500, color: 'var(--text-main)' }}>Seasonality Shift Detected</div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '4px' }}>Model {forecastData.best_model} adapted to early seasonal uptick. Forecast increased by 12%.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        <RestockPanel recommendData={recommendData} />
+                        <InsightsPanel insightsData={insightsData} />
+                    </div>
+                </div>
+
                 {decompData.length > 0 && (
-                    <div className="glass chart-container" style={{ gridColumn: '1 / -1' }}>
-                        <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)' }}>Seasonal Decomposition</h3>
+                    <div className="glass chart-container" style={{ marginTop: '2rem' }}>
+                        <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}>Seasonal Decomposition</h3>
                         <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
                             <div style={{ flex: '1 1 300px' }}>
-                                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Trend</h4>
+                                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Trend</h4>
                                 <ResponsiveContainer width="100%" height={150}>
                                     <ComposedChart data={decompData}>
                                         <Line type="monotone" dataKey="trend" stroke="var(--accent-primary)" strokeWidth={2} dot={false} />
@@ -223,14 +255,14 @@ const Dashboard = ({ loading, forecastData, insightsData, recommendData }) => {
                                 <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Seasonality</h4>
                                 <ResponsiveContainer width="100%" height={150}>
                                     <ComposedChart data={decompData}>
-                                        <Line type="monotone" dataKey="seasonality" stroke="var(--accent-secondary)" strokeWidth={2} dot={false} />
+                                        <Line type="monotone" dataKey="seasonality" stroke="#10B981" strokeWidth={2} dot={false} />
                                         <XAxis dataKey="date" hide />
                                         <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid var(--border-subtle)', borderRadius: '8px', boxShadow: 'var(--shadow-card)' }} />
                                     </ComposedChart>
                                 </ResponsiveContainer>
                             </div>
                             <div style={{ flex: '1 1 300px' }}>
-                                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Residual</h4>
+                                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Residual (Noise)</h4>
                                 <ResponsiveContainer width="100%" height={150}>
                                     <ComposedChart data={decompData}>
                                         <Line type="monotone" dataKey="residual" stroke="var(--danger)" strokeWidth={2} dot={false} />
@@ -242,11 +274,6 @@ const Dashboard = ({ loading, forecastData, insightsData, recommendData }) => {
                         </div>
                     </div>
                 )}
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <InsightsPanel insightsData={insightsData} />
-                    <RestockPanel recommendData={recommendData} />
-                </div>
             </div>
 
             {/* Product Recommendations Table */}
