@@ -25,10 +25,10 @@ app.add_middleware(
 
 os.makedirs("data", exist_ok=True)
 
-DB_PATH = "data/users.db"
-SECRET_KEY = "supersecretkey_for_demo_purposes_only"
-DATA_PATH = "data/uploaded_data.csv"
-SKU_STATE_PATH = "data/skus.txt"
+DB_PATH = os.environ.get("DB_PATH", "data/users.db")
+SECRET_KEY = os.environ.get("SECRET_KEY", "supersecretkey_for_demo_purposes_only")
+DATA_PATH = os.environ.get("DATA_PATH", "data/uploaded_data.csv")
+SKU_STATE_PATH = os.environ.get("SKU_STATE_PATH", "data/skus.txt")
 
 
 def get_skus():
