@@ -30,6 +30,17 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "supersecretkey_for_demo_purposes_only
 DATA_PATH = os.environ.get("DATA_PATH", "data/uploaded_data.csv")
 SKU_STATE_PATH = os.environ.get("SKU_STATE_PATH", "data/skus.txt")
 
+import shutil
+if not os.path.exists(DATA_PATH) and os.path.exists("example_data.csv"):
+    shutil.copy("example_data.csv", DATA_PATH)
+    try:
+        from services import process_upload
+        df = pd.read_csv(DATA_PATH)
+        skus, summary = process_upload(df)
+        with open(SKU_STATE_PATH, "w") as f:
+            f.write("\n".join(skus))
+    except Exception as e:
+        print(f"Failed to bootstrap example data: {e}")
 
 def get_skus():
     if os.path.exists(SKU_STATE_PATH):
